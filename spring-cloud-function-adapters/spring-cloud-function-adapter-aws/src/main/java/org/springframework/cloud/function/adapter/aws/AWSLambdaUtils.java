@@ -161,8 +161,12 @@ final class AWSLambdaUtils {
 	}
 
 	private static byte[] extractPayload(Message<Object> msg, JsonMapper objectMapper) {
-		if (msg.getPayload() instanceof byte[]) {
-			return (byte[]) msg.getPayload();
+		byte[] payload = msg.getPayload();
+		if (payload == null) {
+			return null;
+		}
+		else if (payload instanceof byte[]) {
+			return (byte[]) payload;
 		}
 		else {
 			return objectMapper.toJson(msg.getPayload());
